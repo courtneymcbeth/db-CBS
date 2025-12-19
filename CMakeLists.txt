@@ -22,20 +22,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-add_subdirectory(../Multi-Robot-OMPL EXCLUDE_FROM_ALL)
+# Multi-Robot-OMPL is already added by the parent CMakeLists.txt
+# add_subdirectory(../Multi-Robot-OMPL EXCLUDE_FROM_ALL)
 
 include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${CMAKE_SOURCE_DIR}/deps/libMultiRobotPlanning/include
   ${FCL_INCLUDE_DIRS}
-  ${CMAKE_SOURCE_DIR}/../Multi-Robot-OMPL/src
-  ${CMAKE_BINARY_DIR}/../Multi-Robot-OMPL/src
 )
 
 add_library(motion_planning_common
   src/robots.cpp
 )
 target_include_directories(motion_planning_common
+  PUBLIC ${CMAKE_SOURCE_DIR}/Multi-Robot-OMPL/src
+  PUBLIC ${CMAKE_BINARY_DIR}/Multi-Robot-OMPL/src
   PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
   PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
 )
