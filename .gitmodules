@@ -3,4 +3,4 @@
 	url = git@github.com:IMRCLab/s2m2.git
 [submodule "dynoplan"]
 	path = dynoplan
-	url = git@github.com:quimortiz/dynoplan.git
+	url = git@github.com:courtneymcbeth/dynoplan.git
