@@ -22,14 +22,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-add_subdirectory(k_cbs/Kinodynamic-Conflict-Based-Search EXCLUDE_FROM_ALL)
+add_subdirectory(../Multi-Robot-OMPL EXCLUDE_FROM_ALL)
 
 include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${CMAKE_SOURCE_DIR}/deps/libMultiRobotPlanning/include
   ${FCL_INCLUDE_DIRS}
-  ${CMAKE_SOURCE_DIR}/k_cbs/Kinodynamic-Conflict-Based-Search/src
-  ${CMAKE_BINARY_DIR}/k_cbs/Kinodynamic-Conflict-Based-Search/src
+  ${CMAKE_SOURCE_DIR}/../Multi-Robot-OMPL/src
+  ${CMAKE_BINARY_DIR}/../Multi-Robot-OMPL/src
 )
 
 add_library(motion_planning_common
