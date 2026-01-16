@@ -7,6 +7,7 @@ find_package(Eigen3 REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(YAML REQUIRED yaml-cpp)
 find_package(fcl REQUIRED)
+find_package(crocoddyl REQUIRED)
 
 
 
@@ -137,7 +138,7 @@ target_include_directories(db_cbs PRIVATE
 
 
 
-target_link_libraries(db_cbs PRIVATE 
+target_link_libraries(db_cbs PRIVATE
   idbastar::optimization
   motion_planning_common
   ${Boost_LIBRARIES}
@@ -145,7 +146,35 @@ target_link_libraries(db_cbs PRIVATE
   ompl
   ${FCL_LIBRARIES}
 )
-target_include_directories(main_ompl PUBLIC 
+target_include_directories(main_ompl PUBLIC
+  ${YAML_INCLUDE_DIRS}
+  ${FCL_INCLUDE_DIRS}
+)
+
+## db_rrt (DB-RRT planner using dynoplan)
+
+add_executable(main_db_rrt
+  src/main_db_rrt.cpp
+)
+
+target_include_directories(main_db_rrt PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/dynoplan/include
+  ${CMAKE_CURRENT_SOURCE_DIR}/dynoplan/dynobench/include
+)
+
+target_link_libraries(main_db_rrt PRIVATE
+  idbastar::dbrrt
+  idbastar::optimization
+  dynobench::dynobench
+  motion_planning_common
+  ${Boost_LIBRARIES}
+  ${YAML_LIBRARIES}
+  ompl
+  ${FCL_LIBRARIES}
+  ${CROCODDYL_LIBRARIES}
+  libipopt.so
+)
+target_include_directories(main_db_rrt PUBLIC
   ${YAML_INCLUDE_DIRS}
   ${FCL_INCLUDE_DIRS}
 )
