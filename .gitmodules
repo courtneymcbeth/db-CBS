@@ -4,4 +4,4 @@
 [submodule "dynoplan"]
 	path = dynoplan
 	url = git@github.com:courtneymcbeth/dynoplan.git
-	branch = mr_syclop
+	branch = mac
