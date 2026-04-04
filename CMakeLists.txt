@@ -6,6 +6,8 @@ find_package(Boost 1.58 REQUIRED COMPONENTS program_options)
 find_package(Eigen3 REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(YAML REQUIRED yaml-cpp)
+link_directories(${YAML_LIBRARY_DIRS})
+link_directories(/opt/homebrew/lib)
 find_package(fcl REQUIRED)
 find_package(crocoddyl REQUIRED)
 # set(ompl_ROOT ${}/k_cbs/ompl)
@@ -22,8 +24,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-# Multi-Robot-OMPL is already added by the parent CMakeLists.txt
-# add_subdirectory(../Multi-Robot-OMPL EXCLUDE_FROM_ALL)
+# Add Multi-Robot-OMPL when building standalone (not as part of parent project)
+if (NOT TARGET ompl)
+  add_subdirectory(../Multi-Robot-OMPL Multi-Robot-OMPL EXCLUDE_FROM_ALL)
+endif()
 
 include_directories(
   ${EIGEN3_INCLUDE_DIR}
@@ -43,6 +47,7 @@ target_include_directories(motion_planning_common
   PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
   PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
 )
+target_link_libraries(motion_planning_common PUBLIC Eigen3::Eigen ompl)
 set_property(TARGET motion_planning_common PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 ## ompl
@@ -54,7 +59,7 @@ target_link_libraries(main_ompl
   motion_planning_common
   Boost::program_options
   ${YAML_LIBRARIES}
-  ${OMPL_LIBRARIES}
+  ompl
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl PUBLIC 
@@ -73,7 +78,7 @@ target_link_libraries(main_kcbs
   motion_planning_common
   Boost::program_options
   ${YAML_LIBRARIES}
-  ${OMPL_LIBRARIES}
+  ompl
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_kcbs PUBLIC 
@@ -109,7 +114,7 @@ target_link_libraries(main_ompl_geometric
   motion_planning_common
   Boost::program_options
   ${YAML_LIBRARIES}
-  ${OMPL_LIBRARIES}
+  ompl
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl_geometric PUBLIC 
@@ -145,7 +150,7 @@ target_link_libraries(db_cbs PRIVATE
   motion_planning_common
   Boost::program_options
   ${YAML_LIBRARIES}
-  ${OMPL_LIBRARIES}
+  ompl
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl PUBLIC
