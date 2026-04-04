@@ -8,14 +8,13 @@ find_package(PkgConfig)
 pkg_check_modules(YAML REQUIRED yaml-cpp)
 find_package(fcl REQUIRED)
 find_package(crocoddyl REQUIRED)
+# set(ompl_ROOT ${}/k_cbs/ompl)
+find_package(ompl REQUIRED)
+# pkg_check_modules(OMPL REQUIRED ompl)
 
 
 
 add_subdirectory(dynoplan)
-
-# set(ompl_ROOT ${}/k_cbs/ompl)
-# find_package(ompl)
-# pkg_check_modules(OMPL REQUIRED ompl)
 
 # Enable C++17 and warnings
 set(CMAKE_CXX_STANDARD 17)
@@ -38,6 +37,9 @@ add_library(motion_planning_common
 target_include_directories(motion_planning_common
   PUBLIC ${CMAKE_SOURCE_DIR}/Multi-Robot-OMPL/src
   PUBLIC ${CMAKE_BINARY_DIR}/Multi-Robot-OMPL/src
+  PUBLIC ${Boost_INCLUDE_DIRS}
+  PUBLIC ${OMPL_INCLUDE_DIRS}
+  PUBLIC ${EIGEN3_INCLUDE_DIR}
   PRIVATE ${CMAKE_BINARY_DIR}/deps/fcl/include
   PRIVATE ${CMAKE_SOURCE_DIR}/deps/fcl/include
 )
@@ -50,9 +52,9 @@ add_executable(main_ompl
 )
 target_link_libraries(main_ompl
   motion_planning_common
-  ${Boost_LIBRARIES}
+  Boost::program_options
   ${YAML_LIBRARIES}
-  ompl
+  ${OMPL_LIBRARIES}
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl PUBLIC 
@@ -69,9 +71,9 @@ add_executable(main_kcbs
 )
 target_link_libraries(main_kcbs
   motion_planning_common
-  ${Boost_LIBRARIES}
+  Boost::program_options
   ${YAML_LIBRARIES}
-  ompl
+  ${OMPL_LIBRARIES}
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_kcbs PUBLIC 
@@ -105,9 +107,9 @@ add_executable(main_ompl_geometric
 )
 target_link_libraries(main_ompl_geometric
   motion_planning_common
-  ${Boost_LIBRARIES}
+  Boost::program_options
   ${YAML_LIBRARIES}
-  ompl
+  ${OMPL_LIBRARIES}
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl_geometric PUBLIC 
@@ -141,9 +143,9 @@ target_include_directories(db_cbs PRIVATE
 target_link_libraries(db_cbs PRIVATE
   idbastar::optimization
   motion_planning_common
-  ${Boost_LIBRARIES}
+  Boost::program_options
   ${YAML_LIBRARIES}
-  ompl
+  ${OMPL_LIBRARIES}
   ${FCL_LIBRARIES}
 )
 target_include_directories(main_ompl PUBLIC

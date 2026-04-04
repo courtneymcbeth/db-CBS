@@ -1,3 +1,4 @@
+#include <pinocchio/fwd.hpp>
 #include <iostream>
 #include <fstream>
 #include <iostream>

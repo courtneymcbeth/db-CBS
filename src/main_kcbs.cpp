@@ -75,7 +75,7 @@ namespace oc = ompl::control;
 class SystemMerger: public omrc::SystemMerger
 {
 public: 
-    SystemMerger(const omrc::SpaceInformationPtr &si): omrc::SystemMerger(si) {};
+    SystemMerger(const omrc::SpaceInformationPtr &si, const ompl::multirobot::base::ProblemDefinitionPtr &pdef): omrc::SystemMerger(si, pdef) {};
 
     virtual std::pair<const omrc::SpaceInformationPtr, const ompl::multirobot::base::ProblemDefinitionPtr> merge(const int index1, const int index2) const override
     {
