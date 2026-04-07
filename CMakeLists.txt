@@ -7,6 +7,7 @@ find_package(Eigen3 REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(YAML REQUIRED yaml-cpp)
 link_directories(${YAML_LIBRARY_DIRS})
+link_directories(/usr/local/lib)
 link_directories(/opt/homebrew/lib)
 find_package(fcl REQUIRED)
 find_package(crocoddyl REQUIRED)
@@ -25,9 +26,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # Add Multi-Robot-OMPL when building standalone (not as part of parent project)
-if (NOT TARGET ompl)
-  add_subdirectory(../Multi-Robot-OMPL Multi-Robot-OMPL EXCLUDE_FROM_ALL)
-endif()
+# if (NOT TARGET ompl)
+#   add_subdirectory(../Multi-Robot-OMPL Multi-Robot-OMPL EXCLUDE_FROM_ALL)
+# endif()
 
 include_directories(
   ${EIGEN3_INCLUDE_DIR}
@@ -81,9 +82,10 @@ target_link_libraries(main_kcbs
   ompl
   ${FCL_LIBRARIES}
 )
-target_include_directories(main_kcbs PUBLIC 
+target_include_directories(main_kcbs PUBLIC
   ${YAML_INCLUDE_DIRS}
   ${FCL_INCLUDE_DIRS}
+  /usr/local/include/ompl-1.6
 )
 
 # ## dbastar
@@ -121,6 +123,7 @@ target_include_directories(main_ompl_geometric PUBLIC
   ${YAML_INCLUDE_DIRS}
   ${FCL_INCLUDE_DIRS}
 )
+
 ## db_cbs
 
 add_executable(db_cbs
